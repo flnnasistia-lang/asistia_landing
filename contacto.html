@@ -90,6 +90,7 @@
                 <label for="plan">Plan que te interesa</label>
                 <select id="plan" name="plan">
                     <option value="">Aún no lo sé, necesito asesoramiento</option>
+                    <option value="consulta">Tengo una consulta general</option>
                     <option value="basico">Plan Básico (14,90€/mes)</option>
                     <option value="estandar">Plan Estándar (24,90€/mes)</option>
                     <option value="pro">Plan Pro (39,90€/mes)</option>
@@ -120,25 +121,41 @@
             const descFormulario = document.getElementById("desc-formulario");
             const btnSubmit = document.getElementById("btn-submit");
 
-            // Diccionario para formatear los nombres de los planes
-            const nombresPlanes = {
-                "basico": "Básico",
-                "estandar": "Estándar",
-                "pro": "Pro"
+            // Diccionario con todos los textos personalizados para cada caso
+            const configuracion = {
+                "basico": {
+                    titulo: "Contratar Plan Básico",
+                    desc: "Estás a un paso de automatizar tu agenda. Déjanos tus datos para configurar tu suscripción al Plan Básico (incluye 15 días de prueba gratuita).",
+                    btn: "Solicitar Plan Básico"
+                },
+                "estandar": {
+                    titulo: "Contratar Plan Estándar",
+                    desc: "Estás a un paso de automatizar tu agenda. Déjanos tus datos para configurar tu suscripción al Plan Estándar (incluye 15 días de prueba gratuita).",
+                    btn: "Solicitar Plan Estándar"
+                },
+                "pro": {
+                    titulo: "Contratar Plan Pro",
+                    desc: "Estás a un paso de automatizar tu agenda. Déjanos tus datos para configurar tu suscripción al Plan Pro (incluye 15 días de prueba gratuita).",
+                    btn: "Solicitar Plan Pro"
+                },
+                "consulta": {
+                    titulo: "Envíanos tu consulta",
+                    desc: "Rellena el formulario con tus dudas y nuestro equipo se pondrá en contacto contigo lo antes posible.",
+                    btn: "Enviar consulta"
+                }
             };
             
-            if (planElegido && nombresPlanes[planElegido]) {
+            if (planElegido && configuracion[planElegido]) {
                 // 1. Pre-seleccionar el desplegable
                 if (selectElement.querySelector(`option[value="${planElegido}"]`)) {
                     selectElement.value = planElegido;
                 }
 
-                // 2. Cambiar los textos dinámicamente según el plan elegido
-                const nombreFormateado = nombresPlanes[planElegido];
-                
-                tituloFormulario.textContent = `Contratar Plan ${nombreFormateado}`;
-                descFormulario.textContent = `Estás a un paso de automatizar tu agenda. Déjanos tus datos para configurar tu suscripción al Plan ${nombreFormateado} (incluye 15 días de prueba gratuita).`;
-                btnSubmit.textContent = `Solicitar Plan ${nombreFormateado}`;
+                // 2. Cambiar los textos dinámicamente según la opción
+                const datos = configuracion[planElegido];
+                tituloFormulario.textContent = datos.titulo;
+                descFormulario.textContent = datos.desc;
+                btnSubmit.textContent = datos.btn;
             }
         });
     </script>
