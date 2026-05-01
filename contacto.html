@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto - AsistIA</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <style>
         /* Mismos colores de la landing */
         :root {
@@ -19,8 +20,17 @@
         body { background-color: var(--background-light); color: var(--text-dark); }
 
         header { background-color: var(--white); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .logo { font-size: 1.8rem; font-weight: bold; color: var(--primary-blue); text-decoration: none; }
-        .logo span { color: var(--primary-green); }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 45px; /* Puedes subir o bajar este número si lo quieres más grande o más pequeño */
+            width: auto;
+            object-fit: contain;
+        }
 
         .contact-section {
             max-width: 600px;
@@ -66,11 +76,12 @@
 <body>
 
     <header>
-        <a href="index.html" class="logo">Asist<span>IA</span></a>
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Logo AsistIA">
+        </a>
     </header>
 
     <div class="contact-section">
-        <!-- Añadimos IDs a estos elementos para que JavaScript pueda cambiarlos -->
         <h1 id="titulo-formulario">Empieza tu prueba gratuita</h1>
         <p id="desc-formulario">Déjanos tus datos y nos pondremos en contacto contigo para configurar tu asistente de WhatsApp.</p>
 
@@ -102,7 +113,6 @@
                 <textarea id="mensaje" name="mensaje" placeholder="¿Tienes alguna duda específica?"></textarea>
             </div>
 
-            <!-- Añadimos un ID al botón para cambiar su texto -->
             <button type="submit" id="btn-submit" class="btn-submit">Solicitar mis 15 días gratis</button>
         </form>
 
@@ -110,19 +120,21 @@
     </div>
 
     <!-- Script modificación dinámica -->
-    <script>
+   <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const parametrosURL = new URLSearchParams(window.location.search);
-            const planElegido = parametrosURL.get("plan");
-            
-            // Referencias a los elementos a modificar
+            // Referencias a los elementos
             const selectElement = document.getElementById("plan");
             const tituloFormulario = document.getElementById("titulo-formulario");
             const descFormulario = document.getElementById("desc-formulario");
             const btnSubmit = document.getElementById("btn-submit");
 
-            // Diccionario con todos los textos personalizados para cada caso
+            // Diccionario de textos
             const configuracion = {
+                "prueba": {
+                    titulo: "Empieza tu prueba gratuita",
+                    desc: "Déjanos tus datos y nos pondremos en contacto contigo para configurar tu asistente de WhatsApp.",
+                    btn: "Solicitar mis 15 días gratis"
+                },
                 "basico": {
                     titulo: "Contratar Plan Básico",
                     desc: "Estás a un paso de automatizar tu agenda. Déjanos tus datos para configurar tu suscripción al Plan Básico (incluye 15 días de prueba gratuita).",
@@ -144,21 +156,32 @@
                     btn: "Enviar consulta"
                 }
             };
-            
-            if (planElegido && configuracion[planElegido]) {
-                // 1. Pre-seleccionar el desplegable
-                if (selectElement.querySelector(`option[value="${planElegido}"]`)) {
-                    selectElement.value = planElegido;
-                }
 
-                // 2. Cambiar los textos dinámicamente según la opción
-                const datos = configuracion[planElegido];
+            // Función actualización textos
+            function actualizarTextos(valorSeleccionado) {
+                // Si el valor existe en el diccionario lo usamos, si no cargamos "prueba"
+                const clave = (valorSeleccionado && configuracion[valorSeleccionado]) ? valorSeleccionado : "prueba";
+                const datos = configuracion[clave];
+                
                 tituloFormulario.textContent = datos.titulo;
                 descFormulario.textContent = datos.desc;
                 btnSubmit.textContent = datos.btn;
             }
+            
+            // 1. Al cargar la página: comprobamos la URL
+            const parametrosURL = new URLSearchParams(window.location.search);
+            const planElegido = parametrosURL.get("plan");
+            
+            if (planElegido && selectElement.querySelector(`option[value="${planElegido}"]`)) {
+                selectElement.value = planElegido;
+                actualizarTextos(planElegido);
+            }
+
+            // 2. Al interactuar: escuchamos cambios en el desplegable
+            selectElement.addEventListener("change", function(evento) {
+                actualizarTextos(evento.target.value);
+            });
         });
     </script>
-
 </body>
 </html>
