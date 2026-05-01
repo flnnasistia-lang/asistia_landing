@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AsistIA - Reservas con IA</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <style>
         /* Paleta de colores basada en el documento (Verdes y Azules) */
         :root {
@@ -42,16 +43,15 @@
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary-blue);
             display: flex;
             align-items: center;
-            gap: 10px;
+            text-decoration: none;
         }
 
-        .logo span {
-            color: var(--primary-green);
+        .logo img {
+            height: 45px; /* Puedes subir o bajar este número si lo quieres más grande o más pequeño */
+            width: auto;
+            object-fit: contain;
         }
 
         nav a {
@@ -262,7 +262,9 @@
 
     <!-- Navegación -->
     <header>
-        <div class="logo">Asist<span>IA</span></div>
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Logo AsistIA">
+        </a>
         <nav>
             <a href="#funcionalidades">Funcionalidades</a>
             <a href="#planes">Planes y Precios</a>
