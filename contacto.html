@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - AsistIA</title>
+    <style>
+        /* Mismos colores de la landing */
+        :root {
+            --primary-blue: #0f2c59;
+            --primary-green: #25D366;
+            --background-light: #f4f7f6;
+            --white: #ffffff;
+            --text-dark: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { background-color: var(--background-light); color: var(--text-dark); }
+
+        header { background-color: var(--white); padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { font-size: 1.8rem; font-weight: bold; color: var(--primary-blue); text-decoration: none; }
+        .logo span { color: var(--primary-green); }
+
+        .contact-section {
+            max-width: 600px;
+            margin: 50px auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .contact-section h1 { color: var(--primary-blue); margin-bottom: 10px; text-align: center; }
+        .contact-section p { text-align: center; margin-bottom: 30px; color: #666; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--primary-blue); }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        textarea { resize: vertical; height: 100px; }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--primary-green);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-submit:hover { background-color: #1ebe57; }
+        
+        .back-link { display: block; text-align: center; margin-top: 20px; color: var(--primary-blue); text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Asist<span>IA</span></a>
+    </header>
+
+    <div class="contact-section">
+        <!-- Añadimos IDs a estos elementos para que JavaScript pueda cambiarlos -->
+        <h1 id="titulo-formulario">Empieza tu prueba gratuita</h1>
+        <p id="desc-formulario">Déjanos tus datos y nos pondremos en contacto contigo para configurar tu asistente de WhatsApp.</p>
+
+        <!-- Formulario conectado con Formspree -->
+        <form action="https://formspree.io/f/mrejbqnp" method="POST" id="contactoForm">
+            <div class="form-group">
+                <label for="nombre">Nombre de tu negocio</label>
+                <input type="text" id="nombre" name="nombre_negocio" required placeholder="Ej: Peluquería Ana">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" required placeholder="tu@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="plan">Plan que te interesa</label>
+                <select id="plan" name="plan">
+                    <option value="">Aún no lo sé, necesito asesoramiento</option>
+                    <option value="basico">Plan Básico (14,90€/mes)</option>
+                    <option value="estandar">Plan Estándar (24,90€/mes)</option>
+                    <option value="pro">Plan Pro (39,90€/mes)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="mensaje">Comentarios adicionales (Opcional)</label>
+                <textarea id="mensaje" name="mensaje" placeholder="¿Tienes alguna duda específica?"></textarea>
+            </div>
+
+            <!-- Añadimos un ID al botón para cambiar su texto -->
+            <button type="submit" id="btn-submit" class="btn-submit">Solicitar mis 15 días gratis</button>
+        </form>
+
+        <a href="index.html" class="back-link">← Volver al inicio</a>
+    </div>
+
+    <!-- Script modificación dinámica -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const parametrosURL = new URLSearchParams(window.location.search);
+            const planElegido = parametrosURL.get("plan");
+            
+            // Referencias a los elementos a modificar
+            const selectElement = document.getElementById("plan");
+            const tituloFormulario = document.getElementById("titulo-formulario");
+            const descFormulario = document.getElementById("desc-formulario");
+            const btnSubmit = document.getElementById("btn-submit");
+
+            // Diccionario para formatear los nombres de los planes
+            const nombresPlanes = {
+                "basico": "Básico",
+                "estandar": "Estándar",
+                "pro": "Pro"
+            };
+            
+            if (planElegido && nombresPlanes[planElegido]) {
+                // 1. Pre-seleccionar el desplegable
+                if (selectElement.querySelector(`option[value="${planElegido}"]`)) {
+                    selectElement.value = planElegido;
+                }
+
+                // 2. Cambiar los textos dinámicamente según el plan elegido
+                const nombreFormateado = nombresPlanes[planElegido];
+                
+                tituloFormulario.textContent = `Contratar Plan ${nombreFormateado}`;
+                descFormulario.textContent = `Estás a un paso de automatizar tu agenda. Déjanos tus datos para configurar tu suscripción al Plan ${nombreFormateado} (incluye 15 días de prueba gratuita).`;
+                btnSubmit.textContent = `Solicitar Plan ${nombreFormateado}`;
+            }
+        });
+    </script>
+
+</body>
+</html>
